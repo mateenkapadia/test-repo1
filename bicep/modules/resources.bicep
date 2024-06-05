@@ -19,7 +19,7 @@ module storageAccountModule 'storage.bicep' = {
 }
 
 // Create an app service plan & web app
-module appServiceModule 'appService.bicep' = {
+module appServiceModule 'appservice.bicep' = {
   name: 'appServiceModule'
   params: {
     appServicePlanName: appServicePlanName
@@ -33,7 +33,7 @@ module appServiceModule 'appService.bicep' = {
 }
 
 // Create a key vault
-module keyVaultModule 'keyVault.bicep' = {
+module keyVaultModule 'keyvault.bicep' = {
   name: 'keyVaultModule'
   params: {
     keyVaultName: keyVaultName
