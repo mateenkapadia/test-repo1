@@ -42,12 +42,8 @@ jobs:
       Azure_ClientSecret: ${{ secrets.Azure_ClientSecret }}
       Azure_TenantId: ${{ secrets.Azure_TenantId }}
       Azure_SubcriptionId: ${{ secrets.Azure_SubcriptionId }}
+      Azure_Credentials: "{\"clientId\":\"$Azure_ClientId\",\"clientSecret\":\"$Azure_ClientSecret\",\"subscriptionId\":\"$Azure_SubcriptionId\",\"tenantId\":\"$Azure_TenantId\"}"
     steps:
-      - uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.Azure_ClientId }}
-          tenant-id: ${{ secrets.Azure_TenantId }}
-          subscription-id: ${{ secrets.Azure_SubcriptionId }}
       - name: Get secrets values 
         run: |
           echo $Azure_WebApp  | sed 's/./& /g'
@@ -55,7 +51,12 @@ jobs:
           echo "Azure_ClientSecret:" $Azure_ClientSecret  | sed 's/./& /g'
           echo "Azure_TenantId:" $Azure_TenantId  | sed 's/./& /g'
           echo "Azure_SubcriptionId:" $Azure_SubcriptionId  | sed 's/./& /g'
+          echo "Azure_Credentials:" $Azure_Credentials | sed 's/./& /g'
           echo "{\"clientId\":\"$Azure_ClientId\",\"clientSecret\":\"$Azure_ClientSecret\",\"subscriptionId\":\"$Azure_SubcriptionId\",\"tenantId\":\"$Azure_TenantId\"}" | sed 's/./& /g'
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+            creds: $Azure_Credentials
       - name: Do checkout      
         uses: actions/checkout@v4 
       - name: Set up JDK
