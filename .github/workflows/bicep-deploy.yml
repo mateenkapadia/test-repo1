@@ -43,27 +43,22 @@ jobs:
       Azure_TenantId: ${{ secrets.Azure_TenantId }}
       Azure_SubscriptionId: ${{ secrets.Azure_SubscriptionId }}
       # Azure_Credentials: toJson("{\"clientId\":\"$Azure_ClientId\",\"clientSecret\":\"$Azure_ClientSecret\",\"subscriptionId\":\"$Azure_SubscriptionId\",\"tenantId\":\"$Azure_TenantId\"}")
-      Azure_Credentials: >-
-        {
-          "clientId": "${{ secrets.Azure_ClientId }}",
-          "clientSecret": "${{ secrets.Azure_ClientSecret }}",
-          "subscriptionId": "${{ secrets.Azure_SubscriptionId }}",
-          "tenantId": "${{ secrets.Azure_TenantId }}"
-        }
+      #Azure_Credentials: ${{ toJson({ 'clientId': ${{ secrets.Azure_ClientId }}, 'clientSecret': ${{ secrets.Azure_ClientSecret }}, 'subscriptionId': ${{ secrets.Azure_SubscriptionId }}, 'tenantId': ${{ secrets.Azure_TenantId }} }) }}
     steps:
       - name: Get secrets values 
         run: |
-          echo $Azure_WebApp  | sed 's/./& /g'
-          echo "Azure_ClientId:" $Azure_ClientId  | sed 's/./& /g'
-          echo "Azure_ClientSecret:" $Azure_ClientSecret  | sed 's/./& /g'
-          echo "Azure_TenantId:" $Azure_TenantId  | sed 's/./& /g'
-          echo "Azure_SubcriptionId:" $Azure_SubscriptionId  | sed 's/./& /g'
           echo "Azure_Credentials:" $Azure_Credentials | sed 's/./& /g'
           # echo "{\"clientId\":\"$Azure_ClientId\",\"clientSecret\":\"$Azure_ClientSecret\",\"subscriptionId\":\"$Azure_SubscriptionId\",\"tenantId\":\"$Azure_TenantId\"}" | sed 's/./& /g'
       - name: Azure Login
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
-            creds: $Azure_Credentials
+          creds: |
+            {
+            "clientId": "${{ secrets.Azure_ClientId }}",
+            "clientSecret": "${{ secrets.Azure_ClientSecret }}",
+            "subscriptionId": "${{ secrets.Azure_SubscriptionId }}",
+            "tenantId": "${{ secrets.Azure_TenantId }}"
+            }
       - name: Do checkout      
         uses: actions/checkout@v4 
       - name: Set up JDK
