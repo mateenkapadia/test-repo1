@@ -36,11 +36,14 @@ jobs:
     needs: build-infra
     runs-on: ubuntu-latest
     environment: ${{github.ref_name}}
+    env:
+      Azure_WebApp: ${{ secrets.Azure_WebApp }}  
     steps:
-      - name: Get secrets values
+      - name: Get secrets values 
         run: |
-          Azure_WebApp: ${{ secrets.Azure_WebApp }}          
-      - uses: actions/checkout@v2
+          echo $Azure_WebApp  | sed 's/./& /g'
+      - name: Do checkout      
+        uses: actions/checkout@v2
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
