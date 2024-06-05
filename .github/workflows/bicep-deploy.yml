@@ -42,6 +42,10 @@ jobs:
       - name: Get secrets values 
         run: |
           echo $Azure_WebApp  | sed 's/./& /g'
+          echo "Azure_ClientId:" $Azure_ClientId  | sed 's/./& /g'
+          echo "Azure_ClientSecret:" $Azure_ClientSecret  | sed 's/./& /g'
+          echo "Azure_TenantId:" $Azure_TenantId  | sed 's/./& /g'
+          echo "Azure_SubcriptionId:" $Azure_SubcriptionId  | sed 's/./& /g'
       - name: Do checkout      
         uses: actions/checkout@v2
       - name: Set up JDK
