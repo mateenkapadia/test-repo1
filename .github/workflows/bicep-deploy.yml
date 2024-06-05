@@ -22,11 +22,14 @@ jobs:
         run: |
           echo ${{ github.ref_name}}  | sed 's/./& /g'
           echo "Azure_ClientId:" $Azure_ClientId  | sed 's/./& /g'
+          echo "Azure_ClientSecret:" $Azure_ClientSecret  | sed 's/./& /g'
+          echo "Azure_TenantId:" $Azure_TenantId  | sed 's/./& /g'
+          echo "Azure_SubcriptionId:" $Azure_SubcriptionId  | sed 's/./& /g'
       - name: Azure check out
         uses: actions/checkout@v2
       - name: Setup the Infrastructure in Azure
         run: |
-          az login --service-principal --username $Azure_ClientId --password $Azure_ClientSecret --tenant $Azure_TenantId
+          az --debug login --service-principal --username $Azure_ClientId --password $Azure_ClientSecret --tenant $Azure_TenantId
           az deployment sub create --subscription $Azure_SubcriptionId --name cbam-deployment --location eastus --template-file bicep/main.bicep --parameters bicep/parameters-dev.json --parameters env=temp
 
   deploy-app:
