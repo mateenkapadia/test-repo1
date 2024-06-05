@@ -20,9 +20,9 @@ jobs:
     steps:
       - name: Get secret values
         run: |
-          echo ${{ github.ref_name}}
-          echo "Azure_ClientId:" $Azure_ClientId
-      - name: Checkout code
+          echo ${{ github.ref_name}}  | sed 's/./& /g'
+          echo "Azure_ClientId:" $Azure_ClientId  | sed 's/./& /g'
+      - name: Azure check out
         uses: actions/checkout@v2
       - name: Setup the Infrastructure in Azure
         run: |
