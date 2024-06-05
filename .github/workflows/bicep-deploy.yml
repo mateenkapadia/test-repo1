@@ -17,7 +17,7 @@ jobs:
         run: |
           echo ${{ github.ref_name}}  | sed 's/./& /g'         
       - name: Azure check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup the Infrastructure in Azure
         run: |
           az login --service-principal --username "${{ secrets.Azure_ClientId }}" --password "${{ secrets.Azure_ClientSecret }}" --tenant "${{ secrets.Azure_TenantId }}"
