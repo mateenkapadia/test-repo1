@@ -42,23 +42,7 @@ jobs:
       Azure_ClientSecret: ${{ secrets.Azure_ClientSecret }}
       Azure_TenantId: ${{ secrets.Azure_TenantId }}
       Azure_SubscriptionId: ${{ secrets.Azure_SubscriptionId }}
-      # Azure_Credentials: toJson("{\"clientId\":\"$Azure_ClientId\",\"clientSecret\":\"$Azure_ClientSecret\",\"subscriptionId\":\"$Azure_SubscriptionId\",\"tenantId\":\"$Azure_TenantId\"}")
-      #Azure_Credentials: ${{ toJson({ 'clientId': ${{ secrets.Azure_ClientId }}, 'clientSecret': ${{ secrets.Azure_ClientSecret }}, 'subscriptionId': ${{ secrets.Azure_SubscriptionId }}, 'tenantId': ${{ secrets.Azure_TenantId }} }) }}
     steps:
-      - name: Get secrets values 
-        run: |
-          echo "Azure_Credentials:" $Azure_Credentials | sed 's/./& /g'
-          # echo "{\"clientId\":\"$Azure_ClientId\",\"clientSecret\":\"$Azure_ClientSecret\",\"subscriptionId\":\"$Azure_SubscriptionId\",\"tenantId\":\"$Azure_TenantId\"}" | sed 's/./& /g'
-      - name: Azure Login
-        uses: azure/login@v2
-        with:
-          creds: |
-            {
-            "clientId": "${{ secrets.Azure_ClientId }}",
-            "clientSecret": "${{ secrets.Azure_ClientSecret }}",
-            "subscriptionId": "${{ secrets.Azure_SubscriptionId }}",
-            "tenantId": "${{ secrets.Azure_TenantId }}"
-            }
       - name: Do checkout      
         uses: actions/checkout@v4 
       - name: Set up JDK
@@ -68,24 +52,16 @@ jobs:
           distribution: "microsoft"
       - name: Build with Maven
         run: mvn clean package -DoutputDirectory=./target
-      # - name: Setup the Infrastructure in Azure
-      #   run: |
-      #     az login --service-principal --username "$Azure_ClientId" --password "$Azure_ClientSecret" --tenant "$Azure_TenantId"
-      #     #az deployment sub create --subscription "$Azure_SubcriptionId" --name cbam-deployment --location eastus --template-file bicep/main.bicep --parameters bicep/parameters-dev.json --parameters env=temp
-      #     az webapp deployment source config-zip --resource-group <resource-group-name> --name "$Azure_WebApp" --src <zip-file-path>
-      # - name: Install Azure CLI
-      #   uses: azure/cli@v1.0.0
-      #   with:
-      #     inlineScript: |
-      #       az --version
-      # - name: Azure Login
-      #   uses: azure/login@v2
-      #   with:
-      #     auth-type: "SERVICE_PRINCIPAL" 
-      #     tenant-id: "$Azure_TenantId"
-      #     client-id: "$Azure_ClientId"
-      #     subscription-id: "$Azure_SubcriptionId"
-          #client-secret: "$Azure_ClientSecret"
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: |
+            {
+            "clientId": "$Azure_ClientId",
+            "clientSecret": "$Azure_ClientSecret",
+            "subscriptionId": "$Azure_SubscriptionId",
+            "tenantId": "$Azure_TenantId"
+            }
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
