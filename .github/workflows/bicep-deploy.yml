@@ -51,13 +51,13 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: $Azure_ClientSecret
-          tenant-id: $Azure_TenantId
-          client-id: $Azure_ClientId
-          subscription-id: $Azure_SubcriptionId
+          creds: "$Azure_ClientSecret"
+          tenant-id: "$Azure_TenantId"
+          client-id: "$Azure_ClientId"
+          subscription-id: "$Azure_SubcriptionId"
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: $Azure_WebApp
+          app-name: "$Azure_WebApp"
           package: 'target/*.jar'
