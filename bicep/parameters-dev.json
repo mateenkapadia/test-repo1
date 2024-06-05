@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "resourceGroupName": {
+      "value": "rg-cbam-dev"
+    },
+    "storageAccountName": {
+      "value": "storecbamdev"
+    },
+    "keyVaultName": {
+      "value": "keycbamdev"
+    },
+    "storageAccConnStringSecretName":{
+      "value": "storagecbamconnectionstring"
+    },
+    "appServicePlanName": {
+      "value": "appplancbamdev"
+    },
+    "appWebAppName": {
+      "value": "appcbamdev"
+    }
+  }
+}
