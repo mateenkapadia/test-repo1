@@ -24,7 +24,7 @@ jobs:
       - name: Setup the Infrastructure in Azure
         run: |
           az login --service-principal --username $Azure_ClientId --password $Azure_ClientSecret --tenant $Azure_TenantId
-          az deployment sub create --subscription $Azure_SubcriptionId --name cbam-deployment --location northeurope --template-file bicep/main.bicep --parameters bicep/parameters-dev.json --parameters env=temp
+          az deployment sub create --subscription $Azure_SubcriptionId --name cbam-deployment --location eastus --template-file bicep/main.bicep --parameters bicep/parameters-dev.json --parameters env=temp
 
   deploy-app:
     needs: build-infra

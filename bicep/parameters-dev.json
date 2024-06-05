@@ -3,22 +3,22 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "resourceGroupName": {
-      "value": "rg-cbam-dev"
+      "value": "rg-cbam-dev6524"
     },
     "storageAccountName": {
-      "value": "storecbamdev"
+      "value": "storecbamdev6524"
     },
     "keyVaultName": {
-      "value": "keycbamdev"
+      "value": "keycbamdev6524"
     },
     "storageAccConnStringSecretName":{
       "value": "storagecbamconnectionstring"
     },
     "appServicePlanName": {
-      "value": "appplancbamdev"
+      "value": "appplancbamdev6524"
     },
     "appWebAppName": {
-      "value": "appcbamdev"
+      "value": "appcbamdev6524"
     }
   }
 }
