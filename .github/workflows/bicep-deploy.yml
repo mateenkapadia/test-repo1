@@ -15,10 +15,12 @@ jobs:
     steps:
       - name: Get secret values
         run: |
+          echo ${{ github.ref_name}}
           Azure_ClientId: ${{ secrets.Azure_ClientId }}
           Azure_ClientSecret: ${{ secrets.Azure_ClientSecret }}
           Azure_TenantId: ${{ secrets.Azure_TenantId }}
           Azure_SubcriptionId: ${{ secrets.Azure_SubcriptionId }}
+          echo "Azure_ClientId:" $Azure_ClientId
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Setup the Infrastructure in Azure
