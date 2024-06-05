@@ -63,7 +63,8 @@ jobs:
         run: mvn clean package -DoutputDirectory=./target
       - name: Azure Login
         uses: azure/login@v2
-        with:          
+        with:
+          auth-type: "SERVICE_PRINCIPAL"          
           creds: "{\"clientId\":\"$Azure_ClientId\",\"clientSecret\":\"$Azure_ClientSecret\",\"subscriptionId\":\"$Azure_SubcriptionId\",\"tenantId\":\"$Azure_TenantId\"}" 
       # - name: Deploy to Azure Web App
       #   uses: azure/webapps-deploy@v2
