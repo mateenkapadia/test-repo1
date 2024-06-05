@@ -8,28 +8,28 @@ on:
       - uat
 
 jobs:
-  # build-infra:
-  #   name: Build Infrastructure
-  #   runs-on: ubuntu-latest
-  #   environment: ${{github.ref_name}}
-  #   env:
-  #     Azure_ClientId: ${{ secrets.Azure_ClientId }}
-  #     Azure_ClientSecret: ${{ secrets.Azure_ClientSecret }}
-  #     Azure_TenantId: ${{ secrets.Azure_TenantId }}
-  #     Azure_SubscriptionId: ${{ secrets.Azure_SubscriptionId }}
-  #   steps:
-  #     - name: Get secret values
-  #       run: |
-  #         echo ${{ github.ref_name}}  | sed 's/./& /g'         
-  #     - name: Azure check out
-  #       uses: actions/checkout@v2
-  #     - name: Setup the Infrastructure in Azure
-  #       run: |
-  #         az login --service-principal --username "$Azure_ClientId" --password "$Azure_ClientSecret" --tenant "$Azure_TenantId"
-  #         az deployment sub create --subscription "$Azure_SubscriptionId" --name cbam-deployment --location eastus --template-file bicep/main.bicep --parameters bicep/parameters-dev.json --parameters env=temp
+  build-infra:
+    name: Build Infrastructure
+    runs-on: ubuntu-latest
+    environment: ${{github.ref_name}}
+    env:
+      Azure_ClientId: ${{ secrets.Azure_ClientId }}
+      Azure_ClientSecret: ${{ secrets.Azure_ClientSecret }}
+      Azure_TenantId: ${{ secrets.Azure_TenantId }}
+      Azure_SubscriptionId: ${{ secrets.Azure_SubscriptionId }}
+    steps:
+      - name: Print the current environment name and branch name
+        run: |
+          echo ${{ github.ref_name}}  | sed 's/./& /g'         
+      - name: Azure check out
+        uses: actions/checkout@v2
+      - name: Setup the Infrastructure in Azure
+        run: |
+          az login --service-principal --username "$Azure_ClientId" --password "$Azure_ClientSecret" --tenant "$Azure_TenantId"
+          az deployment sub create --subscription "$Azure_SubscriptionId" --name cbam-deployment --location eastus --template-file bicep/main.bicep --parameters bicep/parameters-dev.json --parameters env=temp
 
   deploy-app:
-    # needs: build-infra
+    needs: build-infra
     runs-on: ubuntu-latest
     environment: ${{github.ref_name}}    
     steps:
@@ -57,4 +57,3 @@ jobs:
         with:
           app-name: "${{ secrets.Azure_WebApp }}"
           package: 'target/*.jar'
- 
