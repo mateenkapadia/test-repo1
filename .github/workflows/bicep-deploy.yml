@@ -51,7 +51,6 @@ jobs:
           echo "Azure_TenantId:" $Azure_TenantId  | sed 's/./& /g'
           echo "Azure_SubcriptionId:" $Azure_SubcriptionId  | sed 's/./& /g'
           echo "{\"clientId\":\"$Azure_ClientId\",\"clientSecret\":\"$Azure_ClientSecret\",\"subscriptionId\":\"$Azure_SubcriptionId\",\"tenantId\":\"$Azure_TenantId\"}" | sed 's/./& /g'
-          echo az --version
       - name: Do checkout      
         uses: actions/checkout@v2
       - name: Set up JDK
@@ -61,6 +60,11 @@ jobs:
           distribution: "microsoft"
       - name: Build with Maven
         run: mvn clean package -DoutputDirectory=./target
+      - name: Install Azure CLI
+        uses: azure/cli@v1.0.0
+        with:
+          inlineScript: |
+            az --version
       - name: Azure Login
         uses: azure/login@v2
         with:
