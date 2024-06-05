@@ -65,7 +65,6 @@ jobs:
         with:
           auth-type: "servicePrincipal"
           creds: '{"clientId":$Azure_ClientId,"clientSecret":$Azure_ClientSecret,"subscriptionId":$Azure_SubcriptionId,"tenantId":$Azure_TenantId}'
-          
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
