@@ -60,7 +60,7 @@ jobs:
       - name: Build with Maven
         run: mvn clean package -DoutputDirectory=./target
       - name: Azure Login
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
           creds: "$Azure_ClientSecret"
           tenant-id: "$Azure_TenantId"
