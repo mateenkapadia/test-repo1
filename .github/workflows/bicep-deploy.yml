@@ -8,29 +8,29 @@ on:
       - uat
 
 jobs:
-  build-infra:
-    name: Build Infrastructure
-    runs-on: ubuntu-latest
-    environment: ${{github.ref_name}}
-    env:
-      Azure_ClientId: ${{ secrets.Azure_ClientId }}
-      Azure_ClientSecret: ${{ secrets.Azure_ClientSecret }}
-      Azure_TenantId: ${{ secrets.Azure_TenantId }}
-      Azure_SubcriptionId: ${{ secrets.Azure_SubcriptionId }}
-    steps:
-      - name: Get secret values
-        run: |
-          echo ${{ github.ref_name}}  | sed 's/./& /g'
-          echo "Azure_ClientId:" $Azure_ClientId  | sed 's/./& /g'
-          echo "Azure_ClientSecret:" $Azure_ClientSecret  | sed 's/./& /g'
-          echo "Azure_TenantId:" $Azure_TenantId  | sed 's/./& /g'
-          echo "Azure_SubcriptionId:" $Azure_SubcriptionId  | sed 's/./& /g'
-      - name: Azure check out
-        uses: actions/checkout@v2
-      - name: Setup the Infrastructure in Azure
-        run: |
-          az login --service-principal --username "$Azure_ClientId" --password "$Azure_ClientSecret" --tenant "$Azure_TenantId"
-          az deployment sub create --subscription "$Azure_SubcriptionId" --name cbam-deployment --location eastus --template-file bicep/main.bicep --parameters bicep/parameters-dev.json --parameters env=temp
+  # build-infra:
+  #   name: Build Infrastructure
+  #   runs-on: ubuntu-latest
+  #   environment: ${{github.ref_name}}
+  #   env:
+  #     Azure_ClientId: ${{ secrets.Azure_ClientId }}
+  #     Azure_ClientSecret: ${{ secrets.Azure_ClientSecret }}
+  #     Azure_TenantId: ${{ secrets.Azure_TenantId }}
+  #     Azure_SubcriptionId: ${{ secrets.Azure_SubcriptionId }}
+  #   steps:
+  #     - name: Get secret values
+  #       run: |
+  #         echo ${{ github.ref_name}}  | sed 's/./& /g'
+  #         echo "Azure_ClientId:" $Azure_ClientId  | sed 's/./& /g'
+  #         echo "Azure_ClientSecret:" $Azure_ClientSecret  | sed 's/./& /g'
+  #         echo "Azure_TenantId:" $Azure_TenantId  | sed 's/./& /g'
+  #         echo "Azure_SubcriptionId:" $Azure_SubcriptionId  | sed 's/./& /g'
+  #     - name: Azure check out
+  #       uses: actions/checkout@v2
+  #     - name: Setup the Infrastructure in Azure
+  #       run: |
+  #         az login --service-principal --username "$Azure_ClientId" --password "$Azure_ClientSecret" --tenant "$Azure_TenantId"
+  #         az deployment sub create --subscription "$Azure_SubcriptionId" --name cbam-deployment --location eastus --template-file bicep/main.bicep --parameters bicep/parameters-dev.json --parameters env=temp
 
   deploy-app:
     needs: build-infra
@@ -42,7 +42,7 @@ jobs:
       Azure_ClientSecret: ${{ secrets.Azure_ClientSecret }}
       Azure_TenantId: ${{ secrets.Azure_TenantId }}
       Azure_SubcriptionId: ${{ secrets.Azure_SubcriptionId }}
-      Azure_Credentials: "{\"clientId\":\"$Azure_ClientId\",\"clientSecret\":\"$Azure_ClientSecret\",\"subscriptionId\":\"$Azure_SubcriptionId\",\"tenantId\":\"$Azure_TenantId\"}"
+      Azure_Credentials: toJson("{\"clientId\":\"$Azure_ClientId\",\"clientSecret\":\"$Azure_ClientSecret\",\"subscriptionId\":\"$Azure_SubcriptionId\",\"tenantId\":\"$Azure_TenantId\"}")
     steps:
       - name: Get secrets values 
         run: |
@@ -52,7 +52,7 @@ jobs:
           echo "Azure_TenantId:" $Azure_TenantId  | sed 's/./& /g'
           echo "Azure_SubcriptionId:" $Azure_SubcriptionId  | sed 's/./& /g'
           echo "Azure_Credentials:" $Azure_Credentials | sed 's/./& /g'
-          echo "{\"clientId\":\"$Azure_ClientId\",\"clientSecret\":\"$Azure_ClientSecret\",\"subscriptionId\":\"$Azure_SubcriptionId\",\"tenantId\":\"$Azure_TenantId\"}" | sed 's/./& /g'
+          # echo "{\"clientId\":\"$Azure_ClientId\",\"clientSecret\":\"$Azure_ClientSecret\",\"subscriptionId\":\"$Azure_SubcriptionId\",\"tenantId\":\"$Azure_TenantId\"}" | sed 's/./& /g'
       - name: Azure Login
         uses: azure/login@v1
         with:
